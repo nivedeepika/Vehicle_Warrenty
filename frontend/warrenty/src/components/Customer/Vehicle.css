@@ -1,0 +1,99 @@
+.vehicle-container {
+  max-width: 1200px;
+  margin: 40px auto;
+}
+
+.vehicle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.vehicle-header h2 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.vehicle-header p {
+  color: gray;
+}
+
+.loader {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.empty-box {
+  text-align: center;
+  padding: 60px;
+  background: #fff;
+  border-radius: 12px;
+}
+
+.empty-icon {
+  font-size: 60px;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+.vehicle-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-top {
+  background: linear-gradient(to right, #1677ff, #36cfc9);
+  padding: 20px;
+  color: white;
+  position: relative;
+}
+
+.car-icon {
+  font-size: 28px;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.card-top h3 {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.card-top p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.vehicle-info {
+  padding: 10px 0;
+}
+
+.vehicle-info div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.warranty-box {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.warranty-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.expiry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: gray;
+}

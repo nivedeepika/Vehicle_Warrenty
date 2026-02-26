@@ -1,0 +1,30 @@
+.warranty-container {
+  max-width: 900px;
+  margin: 40px auto;
+}
+
+.warranty-card {
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.form-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.steps {
+  margin-bottom: 40px;
+}
+
+.form-section {
+  margin-top: 20px;
+}
+
+.button-group {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}

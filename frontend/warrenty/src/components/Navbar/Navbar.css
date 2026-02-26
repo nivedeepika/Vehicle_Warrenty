@@ -1,0 +1,25 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #1677ff, #4096ff);
+  padding: 0 40px;
+}
+
+.logo {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.username {
+  color: #fff;
+  font-weight: 500;
+}

@@ -1,0 +1,267 @@
+body {
+  background: #e6e6e6;
+  font-family: "Poppins", sans-serif;
+}
+
+/* CENTER FULL PAGE */
+/* FULL PAGE CENTER */
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(120deg, #eef2f7, #dfe6f1);
+  padding: 20px;
+}
+
+/* CARD */
+.card {
+  width: 100%;
+  max-width: 1100px;   /* ✅ responsive width */
+  height: 600px;       /* ✅ slightly bigger */
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+/* CARD */
+
+
+/* BLUE PANEL */
+.blue-panel {
+  position: absolute;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(135deg, #2d5be3, #3f7bff);
+  color: white;
+  padding: 50px;
+  transition: 0.6s ease-in-out;
+  z-index: 2;
+
+  border-top-right-radius: 160px;
+  border-bottom-right-radius: 160px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* CENTER CONTENT */
+  text-align: center;
+}
+
+/* MOVE RIGHT */
+.container.active .blue-panel {
+  transform: translateX(122%);
+  border-radius: 160px 0 0 160px;
+}
+
+/* FORM PANEL */
+.form-panel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/* FORMS */
+.form {
+  position: absolute;
+  width: 55%;
+  height: 100%;
+  padding: 60px 80px;
+  top: 0;
+  transition: 0.6s ease-in-out;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* CENTER EVERYTHING */
+}
+
+/* LOGIN FORM */
+.login-form {
+  right: 0;
+}
+
+/* REGISTER FORM */
+.register-form {
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+}
+
+/* SHOW REGISTER */
+.container.active .register-form {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* HIDE LOGIN */
+.container.active .login-form {
+  opacity: 0;
+}
+
+/* TITLE */
+.form h2 {
+  margin-bottom: 25px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* INPUT */
+.input-box {
+  width: 100%;
+  max-width: 360px;   /* bigger */
+  display: flex;
+  align-items: center;
+  background: #f1f4fb;
+  border-radius: 40px;
+  padding: 14px 20px;   /* increased */
+  margin-bottom: 20px;
+  transition: 0.3s;
+}
+
+
+.input-box:hover {
+  background: #e2e7f3;
+}
+
+.icon {
+  color: #777;
+  margin-right: 10px;
+}
+
+.input-box input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 15px;
+}
+
+/* BUTTON (CENTER PERFECTLY) */
+.login-btn {
+  width: 220px;
+  margin-top: 15px;
+  padding: 14px;
+  border: none;
+  border-radius: 40px;
+  background: linear-gradient(135deg, #3f7bff, #2d5be3);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 15px;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(63,123,255,0.3);
+}
+
+/* SOCIAL */
+.social-text {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #555;
+  text-align: center;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.circle {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.circle:hover {
+  background: #3f7bff;
+  color: white;
+}
+
+/* IMAGE */
+.illustration img {
+  width: 160px;
+  margin: 20px 0;
+}
+
+/* GHOST BUTTON */
+.ghost-btn {
+  margin-top: 20px;
+  padding: 10px 30px;
+  border-radius: 25px;
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.ghost-btn:hover {
+  background: white;
+  color: #3f7bff;
+}
+
+/* SOCIAL TEXT */
+.social-text {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #666;
+}
+
+/* ICON CONTAINER */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 15px;
+}
+
+/* BASE CIRCLE */
+.circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+  color: white;
+  font-size: 16px;
+}
+
+/* BRAND COLORS */
+.circle.fb {
+  background: #1877f2;
+}
+
+.circle.google {
+  background: #db4437;
+}
+
+.circle.twitter {
+  background: #000000;
+}
+
+.circle.linkedin {
+  background: #0a66c2;
+}
+
+/* HOVER EFFECT */
+.circle:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
