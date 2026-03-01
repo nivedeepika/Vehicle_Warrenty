@@ -1,45 +1,105 @@
-// src/pages/DealerDashboard.jsx
-
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getDealerDashboard } from "../../api/dealer";
+import axios from "axios";
+import { CheckCircle, XCircle, FileText } from "lucide-react";
+import "./Dealer.css";
 
 const DealerDashboard = () => {
-  const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
-  const [message, setMessage] = useState("");
+  const [claims, setClaims] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const data = await getDealerDashboard();
-        setMessage(data.message || data);
-      } catch (error) {
-        console.error(error.message);
+    fetchClaims();
+  }, []);
 
-        // If token invalid → logout automatically
-        localStorage.clear();
-        navigate("/");
-      }
-    };
+  const fetchClaims = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        "http://localhost:5000/api/warranty/get-warranties",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setClaims(res.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchDashboard();
-  }, [navigate]);
-
-  const logout = () => {
-    localStorage.clear();
-    navigate("/");
+  const updateStatus = async (id, status) => {
+    try {
+      await axios.put(
+        `http://localhost:5000/api/warranty/update-status/${id}`,
+        { status }, // ✅ lowercase
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      fetchClaims();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Dealer Dashboard 🚗</h1>
-      <h3>Welcome {user?.name}</h3>
-      <p>Role: {user?.role}</p>
+    <div className="dealer-container">
+      <h2><FileText size={22} /> Dealer Dashboard</h2>
 
-      <h4>{message}</h4>
-
-      <button onClick={logout}>Logout</button>
+      <div className="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Vehicle</th>
+              <th>Customer</th>
+              <th>Issue</th>
+              <th>Odometer</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan="5" className="no-data">Loading...</td>
+              </tr>
+            ) : claims.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="no-data">
+                  No Pending Claims
+                </td>
+              </tr>
+            ) : (
+              claims.map((claim) => (
+                <tr key={claim._id}>
+                  <td>{claim.vehicle?.vehicleNumber}</td>
+                  <td>{claim.user?.name}</td>
+                  <td>{claim.issueTitle}</td>
+                  <td>{claim.odometerReading}</td>
+                  <td className="actions">
+                    <button
+                      className="approve"
+                      onClick={() => updateStatus(claim._id, "approved")}
+                    >
+                      <CheckCircle size={18} /> Approve
+                    </button>
+                    <button
+                      className="reject"
+                      onClick={() => updateStatus(claim._id, "rejected")}
+                    >
+                      <XCircle size={18} /> Reject
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

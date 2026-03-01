@@ -6,6 +6,7 @@ const {
   getClaims,
   getSingleClaim,
   deleteClaim,
+  updateClaimStatus, // ✅ ADD THIS
 } = require("../controllers/warrentyController");
 
 const { protect } = require("../middlewares/authMiddleware");
@@ -29,6 +30,15 @@ router.post(
     { name: "problemPhotos", maxCount: 5 },
   ]),
   createClaim
+);
+// =====================================
+// DEALER / ADMIN UPDATE STATUS
+// =====================================
+router.put(
+  "/update-status/:id",
+  protect,
+  authorizeRoles("dealer", "admin"),
+  updateClaimStatus
 );
 
 // Delete Warranty (customer can delete own)

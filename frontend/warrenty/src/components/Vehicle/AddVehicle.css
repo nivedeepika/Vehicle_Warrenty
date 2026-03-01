@@ -1,0 +1,64 @@
+.add-vehicle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  background: #f4f7fb;
+}
+
+.add-vehicle-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  width: 400px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.add-vehicle-card h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.av-field {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.av-field label {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.av-field input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  transition: 0.2s ease;
+}
+
+.av-field input:focus {
+  border-color: #1890ff;
+  outline: none;
+}
+
+.av-submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.av-submit-btn:hover {
+  background: #147bd1;
+}
+
+.add-vehicle-link {
+  font-weight: 600;
+  color: #1890ff;
+}

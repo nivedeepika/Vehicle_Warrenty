@@ -54,24 +54,25 @@ exports.createClaim = async (req, res) => {
         .json({ message: "Invoice and RC Book required" });
     }
 
-    const claim = await WarrantyClaim.create({
-      user: req.user._id,
-      vehicle: vehicleId,
+   const claim = await WarrantyClaim.create({
+  user: req.user._id,
+  vehicle: vehicleId,
 
-      issueCategory: category,
-      issueTitle: title,
-      issueDescription: description,
-      issueStartDate,
-      odometerReading,
-      underWarranty,
-      previousService,
+  issueCategory: category,
+  issueTitle: title,
+  issueDescription: description,
+  issueStartDate,
+  odometerReading,
+  underWarranty,
+  previousService,
 
-      vehicleInvoice,
-      rcBook,
-      serviceRecords,
-      problemPhotos,
-      problemVideo,
-    });
+  vehicleInvoice,
+  rcBook,
+  serviceRecords,
+  problemPhotos,
+  problemVideo,
+
+});
 
     res.status(201).json({
       message: "Claim submitted successfully",
@@ -91,9 +92,19 @@ exports.getClaims = async (req, res) => {
   try {
     let filter = {};
 
-    // Customer → only own claims
+    // Customer → only their claims
     if (req.user.role === "customer") {
       filter.user = req.user._id;
+    }
+
+    // Dealer → only pending claims
+    if (req.user.role === "dealer") {
+      filter.status = "pending";
+    }
+
+    // Admin → only dealerApproved claims
+    if (req.user.role === "admin") {
+      filter.status = "dealerApproved";
     }
 
     const claims = await WarrantyClaim.find(filter)
@@ -106,7 +117,6 @@ exports.getClaims = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // ==========================================
 // GET SINGLE CLAIM
@@ -147,23 +157,67 @@ exports.updateClaimStatus = async (req, res) => {
       return res.status(404).json({ message: "Claim not found" });
     }
 
-    claim.status = status;
+    // ==========================
+    // DEALER LOGIC
+    // ==========================
+    if (req.user.role === "dealer") {
+      // Dealer can act only on pending claims
+      if (claim.status !== "pending") {
+        return res.status(400).json({
+          message: "Dealer can only process pending claims",
+        });
+      }
 
-    if (status === "Rejected") {
-      claim.rejectionReason = rejectionReason;
+      if (status === "approved") {
+        claim.status = "dealerApproved";
+      } 
+      else if (status === "rejected") {
+        claim.status = "rejected";
+        claim.rejectionReason = rejectionReason || "Rejected by dealer";
+      } 
+      else {
+        return res.status(400).json({
+          message: "Invalid status value",
+        });
+      }
+    }
+
+    // ==========================
+    // ADMIN LOGIC
+    // ==========================
+    if (req.user.role === "admin") {
+      // Admin can act only after dealer approval
+      if (claim.status !== "dealerApproved") {
+        return res.status(400).json({
+          message: "Dealer approval required first",
+        });
+      }
+
+      if (status === "approved") {
+        claim.status = "approved";
+      } 
+      else if (status === "rejected") {
+        claim.status = "rejected";
+        claim.rejectionReason = rejectionReason || "Rejected by admin";
+      } 
+      else {
+        return res.status(400).json({
+          message: "Invalid status value",
+        });
+      }
     }
 
     await claim.save();
 
     res.json({
-      message: "Claim status updated",
+      message: "Claim status updated successfully",
       claim,
     });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // ==========================================
 // DELETE CLAIM (Customer Only)

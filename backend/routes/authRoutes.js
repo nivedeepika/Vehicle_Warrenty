@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   registerUser,
-  loginUser,
+  loginUser,getMe
 } = require("../controllers/authController");
 
 const { protect } = require("../middlewares/authMiddleware");
@@ -10,7 +10,7 @@ const { authorizeRoles } = require("../middlewares/roleMiddleware");
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-
+router.get("/me", protect, getMe);
 // =======================
 // CUSTOMER DASHBOARD
 // =======================

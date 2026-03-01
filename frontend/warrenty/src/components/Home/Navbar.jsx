@@ -75,6 +75,9 @@ function Navbar() {
       <div className="oz-nav-menu">
   <Link to="/home">Home</Link>
   <Link to="/warranty">Warranty</Link>
+   <Link to="/add-vehicle" className="add-vehicle-link">
+    + Add Vehicle
+  </Link>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
 </div>

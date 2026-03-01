@@ -105,11 +105,19 @@ const aboutCards = [
                 Apply, Track and Manage Your Vehicle Warranty Claims Easily
               </p>
             </div>
-            <Link to="/warranty">
-              <Button type="primary" size="large">
-                Apply Warranty Claim
-              </Button>
-            </Link>
+            <div className="oz-hero-buttons">
+  <Link to="/warranty">
+    <Button type="primary" size="large">
+      Apply Warranty Claim
+    </Button>
+  </Link>
+
+  <Link to="/my-claims">
+    <Button size="large" className="oz-secondary-btn">
+      My Warranty Forms
+    </Button>
+  </Link>
+</div>
           </div>
         </section>
 

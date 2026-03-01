@@ -81,7 +81,7 @@ const StepIssueDetails = ({ issue, onIssueChange }) => {
               value={issue.odometerReading}
               onChange={(e) =>
                 onIssueChange({
-                  odometerReading: e.target.value,
+                  odometerReading: Number(e.target.value), // ✅ FIXED
                 })
               }
               placeholder="e.g. 25000"
@@ -109,13 +109,13 @@ const StepIssueDetails = ({ issue, onIssueChange }) => {
               value={issue.underWarranty}
               onChange={(e) =>
                 onIssueChange({
-                  underWarranty: e.target.value,
+                  underWarranty: e.target.value, // already boolean
                 })
               }
               className="wc-issue-radio"
             >
-              <Radio value="yes">Yes</Radio>
-              <Radio value="no">No</Radio>
+              <Radio value={true}>Yes</Radio>
+              <Radio value={false}>No</Radio>
             </Radio.Group>
           </div>
 
@@ -124,23 +124,23 @@ const StepIssueDetails = ({ issue, onIssueChange }) => {
             <label>Any previous service done?</label>
             <Radio.Group
               value={issue.previousService}
-              onChange={(e) =>
+              onChange={(e) => {
+                const isYes = e.target.value;
+
                 onIssueChange({
-                  previousService: e.target.value,
-                  ...(e.target.value === "no"
-                    ? { previousServiceCount: "" }
-                    : {}),
-                })
-              }
+                  previousService: isYes,
+                  previousServiceCount: isYes ? issue.previousServiceCount : 0,
+                });
+              }}
               className="wc-issue-radio"
             >
-              <Radio value="yes">Yes</Radio>
-              <Radio value="no">No</Radio>
+              <Radio value={true}>Yes</Radio>
+              <Radio value={false}>No</Radio>
             </Radio.Group>
           </div>
 
           {/* Conditional */}
-          {issue.previousService === "yes" && (
+          {issue.previousService === true && (
             <div className="wc-issue-field wc-issue-animate">
               <label>How Many Times?</label>
               <Input
@@ -148,7 +148,7 @@ const StepIssueDetails = ({ issue, onIssueChange }) => {
                 value={issue.previousServiceCount}
                 onChange={(e) =>
                   onIssueChange({
-                    previousServiceCount: e.target.value,
+                    previousServiceCount: Number(e.target.value), // ✅ FIXED
                   })
                 }
                 placeholder="e.g. 3"

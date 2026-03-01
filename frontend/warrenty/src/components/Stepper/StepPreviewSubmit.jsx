@@ -33,15 +33,18 @@ const InfoRow = ({ label, value }) => (
 );
 
 const StepPreviewSubmit = ({ data, onEditStep }) => {
-  const docCount =
-    [
-      data.documents.vehicleInvoice,
-      data.documents.rcBook,
-      data.documents.serviceRecords,
-      data.documents.problemVideo,
-    ].filter(Boolean).length +
-    data.documents.problemPhotos.length;
-    const navigate = useNavigate();
+  const documents = data?.documents || {};
+
+const docCount =
+  [
+    documents.vehicleInvoice,
+    documents.rcBook,
+    documents.serviceRecords,
+    documents.problemVideo,
+  ].filter(Boolean).length +
+  (documents.problemPhotos?.length || 0);
+
+const navigate = useNavigate();
 
     const handleSubmit = () => {
   toast.success("Warranty submitted successfully 🎉", {
@@ -70,10 +73,10 @@ const StepPreviewSubmit = ({ data, onEditStep }) => {
 
         {/* Customer */}
         <SectionHeader
-          title="✅ Customer Details"
-          stepIndex={0}
-          onEdit={onEditStep}
-        />
+  title="✅ Customer Details"
+  stepIndex={0}
+  onEdit={onEditStep}
+/>
 
         <div className="wc-preview-box">
           <InfoRow label="Full Name" value={data.customer.fullName} />
@@ -85,11 +88,11 @@ const StepPreviewSubmit = ({ data, onEditStep }) => {
         <Divider />
 
         {/* Vehicle */}
-        <SectionHeader
-          title="✅ Vehicle Details"
-          stepIndex={0}
-          onEdit={onEditStep}
-        />
+       <SectionHeader
+  title="✅ Vehicle Details"
+  stepIndex={1}
+  onEdit={onEditStep}
+/>
 
         <div className="wc-preview-box">
           <InfoRow label="Model" value={data.vehicle.model} />
@@ -103,10 +106,10 @@ const StepPreviewSubmit = ({ data, onEditStep }) => {
 
         {/* Issue */}
         <SectionHeader
-          title="✅ Issue Details"
-          stepIndex={1}
-          onEdit={onEditStep}
-        />
+  title="✅ Issue Details"
+  stepIndex={2}
+  onEdit={onEditStep}
+/>
 
         <div className="wc-preview-box">
           <InfoRow label="Category" value={data.issue.category} />
@@ -118,7 +121,7 @@ const StepPreviewSubmit = ({ data, onEditStep }) => {
             value={
               data.issue.odometerReading
                 ? `${data.issue.odometerReading} km`
-                : ""
+                : "-"
             }
           />
 
@@ -138,10 +141,10 @@ const StepPreviewSubmit = ({ data, onEditStep }) => {
 
         {/* Documents */}
         <SectionHeader
-          title="✅ Uploaded Documents"
-          stepIndex={2}
-          onEdit={onEditStep}
-        />
+  title="✅ Uploaded Documents"
+  stepIndex={3}
+  onEdit={onEditStep}
+/>
 
         <div className="wc-preview-box">
           <div className="wc-preview-doc-count">

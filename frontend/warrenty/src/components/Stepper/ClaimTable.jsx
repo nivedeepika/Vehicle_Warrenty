@@ -1,112 +1,145 @@
-import React from "react";
-import { Table, Tag, Button } from "antd";
-import { Plus, FileText } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Table, Tag, Button, message, Spin } from "antd";
+import {
+  FileText,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Download,
+  Car,
+} from "lucide-react";
+import axios from "axios";
 import "./ClaimTable.css";
 
-const ClaimsTable = ({ claims, onNewClaim }) => {
+const ClaimsTable = () => {
+  const [claims, setClaims] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchClaims();
+  }, []);
+
+  const fetchClaims = async () => {
+    try {
+      setLoading(true);
+
+      const res = await axios.get(
+        "http://localhost:5000/api/warranty/get-warranties",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setClaims(res.data);
+    } catch (err) {
+      message.error("Failed to load claims");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ FIXED STATUS TAG
+  const getStatusTag = (status) => {
+    const normalized = status?.toLowerCase();
+
+    switch (normalized) {
+      case "approved":
+        return (
+          <Tag color="green" icon={<CheckCircle size={14} />}>
+            Approved
+          </Tag>
+        );
+
+      case "rejected":
+        return (
+          <Tag color="red" icon={<XCircle size={14} />}>
+            Rejected
+          </Tag>
+        );
+
+      default:
+        return (
+          <Tag color="orange" icon={<Clock size={14} />}>
+            Pending
+          </Tag>
+        );
+    }
+  };
+
+  const handleDownload = (claimId) => {
+    window.open(
+      `http://localhost:5000/api/warranty/download/${claimId}`,
+      "_blank"
+    );
+  };
+
   const columns = [
     {
-      title: "Claim ID",
-      dataIndex: "claimId",
-      key: "claimId",
-      render: (text) => <span className="ct-claim-id">{text}</span>,
-    },
-    {
       title: "Vehicle",
-      key: "vehicle",
-      render: (_, record) => (
-        <div>
-          <div className="ct-vehicle-model">{record.vehicle.model}</div>
-          <div className="ct-vehicle-number">
-            {record.vehicle.vehicleNumber}
-          </div>
+      dataIndex: ["vehicle", "vehicleNumber"],
+      render: (text) => (
+        <div className="ct-vehicle">
+          <Car size={16} />
+          <span>{text}</span>
         </div>
       ),
     },
     {
-      title: "Issue",
-      dataIndex: ["issue", "title"],
-      key: "issue",
-      render: (text) => <span className="ct-issue-text">{text}</span>,
+      title: "Model",
+      dataIndex: ["vehicle", "model"],
     },
     {
-      title: "Category",
-      key: "category",
-      render: (_, record) => (
-        <Tag className="ct-category-tag">
-          {record.issue.category}
-        </Tag>
+      title: "Issue",
+      dataIndex: "issueTitle",
+      render: (text) => (
+        <div className="ct-issue">
+          <FileText size={14} />
+          <span>{text}</span>
+        </div>
       ),
     },
     {
       title: "Status",
-      key: "status",
-      render: (_, record) => (
-        <Tag className="ct-status-tag">{record.status}</Tag>
-      ),
+      dataIndex: "status",
+      render: (status) => getStatusTag(status),
     },
     {
-      title: "Submitted",
-      dataIndex: "submittedAt",
-      key: "submittedAt",
-      render: (text) => (
-        <span className="ct-submitted-date">{text}</span>
-      ),
-    },
-    {
-      title: "Documents",
-      key: "documents",
-      align: "right",
+      title: "Download",
       render: (_, record) => {
-        const docCount =
-          [
-            record.documents.vehicleInvoice,
-            record.documents.rcBook,
-            record.documents.serviceRecords,
-            record.documents.problemVideo,
-          ].filter(Boolean).length +
-          record.documents.problemPhotos.length;
+        const isApproved =
+          record.status?.toLowerCase() === "approved";
 
         return (
-          <div className="ct-doc-count">
-            <FileText size={14} />
-            {docCount}
-          </div>
+          <Button
+            type="primary"
+            icon={<Download size={14} />}
+            disabled={!isApproved}
+            className="ct-download-btn"
+            onClick={() => handleDownload(record.claimId)}
+          >
+            Download
+          </Button>
         );
       },
     },
   ];
 
   return (
-    <div className="ct-wrapper">
-      {/* Header */}
-      <div className="ct-header">
-        <div>
-          <h2 className="ct-title">Warranty Claims</h2>
-          <p className="ct-subtitle">
-            {claims.length} claim(s) submitted
-          </p>
-        </div>
+    <div className="claims-table-wrapper">
+      <h2 className="claims-title">My Warranty Claims</h2>
 
-        <Button
-          type="primary"
-          className="ct-new-btn"
-          onClick={onNewClaim}
-        >
-          <Plus size={16} />
-          New Claim
-        </Button>
-      </div>
-
-      {/* Table */}
-      <div className="ct-table">
+      <Spin spinning={loading}>
         <Table
           columns={columns}
           dataSource={claims}
-          rowKey="claimId"
-          pagination={false}
+          rowKey="_id"
+          pagination={{ pageSize: 5 }}
+          scroll={{ x: true }}
+          className="claims-table"
         />
-      </div>
+      </Spin>
     </div>
   );
 };

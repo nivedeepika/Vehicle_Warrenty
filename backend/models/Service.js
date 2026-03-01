@@ -86,10 +86,15 @@ const warrantySchema = new mongoose.Schema(
     },
 
     status: {
-      type: String,
-      enum: ["pending", "approved", "rejected"],
-      default: "pending",
-    },
+  type: String,
+  enum: [
+    "pending",
+    "dealerApproved",
+    "approved",
+    "rejected",
+  ],
+  default: "pending",
+},
 
     rejectionReason: {
       type: String,

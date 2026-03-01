@@ -384,3 +384,22 @@ body {
     gap: 15px;
   }
 }
+.oz-hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.oz-secondary-btn {
+  background: white;
+  border: 2px solid #1677ff;
+  color: #1677ff;
+  font-weight: 500;
+}
+
+.oz-secondary-btn:hover {
+  background: #1677ff;
+  color: white;
+}

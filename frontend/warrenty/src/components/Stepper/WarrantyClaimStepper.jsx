@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Button, message } from "antd";
 import { ArrowLeft, ArrowRight, Send, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -11,36 +11,38 @@ import StepDocumentUpload from "./StepDocumentUpload";
 import StepPreviewSubmit from "./StepPreviewSubmit";
 import ClaimsTable from "./ClaimTable";
 import Navbar from "../Home/Navbar";
+import axios from "axios";
 
 const WarrantyClaimStepper = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
 
   const [customer, setCustomer] = useState({
-    fullName: "Rahul Sharma",
-    email: "rahul.sharma@email.com",
-    mobile: "+91 98765 43210",
+    fullName: "",
+    email: "",
+    mobile: "",
     address: "",
   });
 
   const [vehicle, setVehicle] = useState({
-    model: "",
-    vehicleNumber: "",
-    vinNumber: "",
-    purchaseDate: "",
-    dealerName: "",
-  });
+  vehicleId: "",  // ADD THIS
+  model: "",
+  vehicleNumber: "",
+  vinNumber: "",
+  purchaseDate: "",
+  dealerName: "",
+});
 
-  const [issue, setIssue] = useState({
-    category: "",
-    title: "",
-    description: "",
-    issueStartDate: "",
-    odometerReading: "",
-    underWarranty: "",
-    previousService: "",
-    previousServiceCount: "",
-  });
+const [issue, setIssue] = useState({
+  category: "",
+  title: "",
+  description: "",
+  issueStartDate: "",
+  odometerReading: "",
+  underWarranty: false,
+  previousService: false,
+  previousServiceCount: 0,
+});
 
   const [documents, setDocuments] = useState({
     vehicleInvoice: null,
@@ -55,6 +57,35 @@ const WarrantyClaimStepper = () => {
 
   const totalSteps = 4;
 
+  useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/auth/me",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const user = response.data;
+
+      setCustomer({
+        fullName: user.name || "",
+        email: user.email || "",
+        mobile: user.mobile || "",
+        address: "",
+      });
+
+    } catch (error) {
+      console.error("Failed to fetch user", error);
+    }
+  };
+
+  fetchUser();
+}, []);
+
   const handleNext = () => {
     if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
@@ -67,27 +98,100 @@ const WarrantyClaimStepper = () => {
     }
   };
 
-  const handleSubmit = () => {
-  const claimId = `WC-${Date.now().toString(36).toUpperCase()}`;
+//   const handleSubmit = () => {
+//   const claimId = `WC-${Date.now().toString(36).toUpperCase()}`;
 
-  const newClaim = {
-    customer,
-    vehicle,
-    issue,
-    documents,
-    submittedAt: new Date().toLocaleDateString(),
-    claimId,
-    status: "Pending Review",
-  };
+//   const newClaim = {
+//     customer,
+//     vehicle,
+//     issue,
+//     documents,
+//     submittedAt: new Date().toLocaleDateString(),
+//     claimId,
+//     status: "Pending Review",
+//   };
 
-  setClaims([...claims, newClaim]);
+//   setClaims([...claims, newClaim]);
 
-  message.success(`Claim Submitted Successfully! ID: ${claimId}`);
+//   message.success(`Claim Submitted Successfully! ID: ${claimId}`);
 
-  // Navigate after 2 seconds
-  setTimeout(() => {
-    navigate("/home");
-  }, 2000);
+//   // Navigate after 2 seconds
+//   setTimeout(() => {
+//     navigate("/home");
+//   }, 2000);
+// };
+
+const handleSubmit = async () => {
+  if (!vehicle.vehicleId) {
+  message.error("Please select a vehicle");
+  return;
+}
+  try {
+    const formData = new FormData();
+
+    // =========================
+    // TEXT FIELDS
+    // =========================
+    formData.append("vehicleId", vehicle.vehicleId); // Make sure you store this
+    formData.append("category", issue.category);
+    formData.append("title", issue.title);
+    formData.append("description", issue.description);
+    formData.append("issueStartDate", issue.issueStartDate);
+    formData.append("odometerReading", issue.odometerReading);
+    formData.append("underWarranty", issue.underWarranty);
+    formData.append("previousService", issue.previousService);
+    formData.append("previousServiceCount", issue.previousServiceCount);
+
+    // =========================
+    // FILES
+    // =========================
+    if (documents.vehicleInvoice)
+      formData.append("vehicleInvoice", documents.vehicleInvoice);
+
+    if (documents.rcBook)
+      formData.append("rcBook", documents.rcBook);
+
+    if (documents.serviceRecords)
+      formData.append("serviceRecords", documents.serviceRecords);
+
+    // Multiple photos
+    if (documents.problemPhotos.length > 0) {
+      documents.problemPhotos.forEach((photo) => {
+        formData.append("problemPhotos", photo);
+      });
+    }
+
+    if (documents.problemVideo)
+      formData.append("problemVideo", documents.problemVideo);
+
+    // =========================
+    // API CALL
+    // =========================
+    const response = await axios.post(
+      "http://localhost:5000/api/warranty/create-warranty",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    message.success(response.data.message);
+
+    console.log("Claim Response:", response.data);
+
+    setTimeout(() => {
+      navigate("/home");
+    }, 2000);
+
+  } catch (error) {
+    console.error(error);
+    message.error(
+      error.response?.data?.message || "Failed to submit claim"
+    );
+  }
 };
 
   if (showTable) {

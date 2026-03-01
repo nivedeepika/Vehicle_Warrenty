@@ -9,9 +9,9 @@ import CustomerDashboard from "./components/Customer/Customer";
 import Home from "./components/Home/Home";
 import WarrantyClaimStepper from "./components/Stepper/WarrantyClaimStepper";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
-
+import AddVehicle from "./components/Vehicle/AddVehicle";
 import "antd/dist/reset.css";
-
+import ClaimsTable from './components/Stepper/ClaimTable'
 function App() {
   return (
     <Router>
@@ -29,6 +29,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
+
+<Route path="/add-vehicle" element={<AddVehicle />} />
 
         {/* Admin Route */}
         <Route
@@ -39,6 +42,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/my-claims" element={<ClaimsTable />} />
 
         {/* Dealer Route */}
         <Route

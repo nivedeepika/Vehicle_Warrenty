@@ -15,7 +15,6 @@ const formatSize = (bytes) => {
   return `${(bytes / 1048576).toFixed(1)} MB`;
 };
 
-
 /* File Chip */
 const FileChip = ({ file, onRemove }) => (
   <div className="sdu-file-chip">
@@ -80,115 +79,31 @@ const StepDocumentUpload = ({
   documents,
   onDocumentsChange,
 }) => {
+
+  // ✅ Store only actual File object
   const handleSingleFile =
     (key) => (files) => {
       const f = files[0];
       if (f && f.size <= 10 * 1024 * 1024) {
         onDocumentsChange({
-          [key]: {
-            name: f.name,
-            size: f.size,
-            type: f.type,
-            file: f,
-          },
+          [key]: f,
         });
       }
     };
 
   const handleMultipleFiles = (files) => {
-    const newFiles = Array.from(files)
-      .filter((f) => f.size <= 10 * 1024 * 1024)
-      .map((f) => ({
-        name: f.name,
-        size: f.size,
-        type: f.type,
-        file: f,
-      }));
+    const validFiles = Array.from(files).filter(
+      (f) => f.size <= 10 * 1024 * 1024
+    );
 
     onDocumentsChange({
       problemPhotos: [
         ...documents.problemPhotos,
-        ...newFiles,
+        ...validFiles,
       ],
     });
   };
 
-  const handleFinalSubmit = async () => {
-  const formData = new FormData();
-
-  // ========================
-  // TEXT DATA
-  // ========================
-
-  formData.append("vehicleId", selectedVehicleId);
-  formData.append("customerAddress", customer.address);
-
-  formData.append("category", issue.category);
-  formData.append("title", issue.title);
-  formData.append("description", issue.description);
-  formData.append("issueStartDate", issue.issueStartDate);
-  formData.append("odometerReading", issue.odometerReading);
-
-  formData.append(
-    "underWarranty",
-    issue.underWarranty === "yes"
-  );
-
-  formData.append(
-    "previousService",
-    issue.previousService === "yes"
-  );
-
-  formData.append(
-    "previousServiceCount",
-    issue.previousService === "yes"
-      ? issue.previousServiceCount
-      : 0
-  );
-
-  // ========================
-  // FILES
-  // ========================
-
-  if (documents.vehicleInvoice?.file)
-    formData.append(
-      "vehicleInvoice",
-      documents.vehicleInvoice.file
-    );
-
-  if (documents.rcBook?.file)
-    formData.append(
-      "rcBook",
-      documents.rcBook.file
-    );
-
-  if (documents.serviceRecords?.file)
-    formData.append(
-      "serviceRecords",
-      documents.serviceRecords.file
-    );
-
-  if (documents.problemVideo?.file)
-    formData.append(
-      "problemVideo",
-      documents.problemVideo.file
-    );
-
-  documents.problemPhotos.forEach((photo) => {
-    formData.append("problemPhotos", photo.file);
-  });
-
-  await axios.post(
-    "/api/warranty/create-warranty",
-    formData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
-};
   return (
     <div className="sdu-container">
 
