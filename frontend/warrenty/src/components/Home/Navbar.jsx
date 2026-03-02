@@ -1,7 +1,6 @@
 import React from "react";
 import "./Navbar.css";
 import { Avatar, Dropdown, Space } from "antd";
-
 import {
   UserOutlined,
   LogoutOutlined,
@@ -38,7 +37,7 @@ function Navbar() {
       key: "profile",
       icon: <UserOutlined />,
       label: "Profile",
-      onClick: () => navigate("/customer"),
+      onClick: () => navigate("/profile"), // ✅ FIXED HERE
     },
     {
       key: "settings",
@@ -73,14 +72,14 @@ function Navbar() {
 
       {/* CENTER - MENU */}
       <div className="oz-nav-menu">
-  <Link to="/home">Home</Link>
-  <Link to="/warranty">Warranty</Link>
-   <Link to="/add-vehicle" className="add-vehicle-link">
-    + Add Vehicle
-  </Link>
-  <a href="#about">About</a>
-  <a href="#contact">Contact</a>
-</div>
+        <Link to="/home">Home</Link>
+        <Link to="/warranty">Warranty</Link>
+        <Link to="/add-vehicle" className="add-vehicle-link">
+          Vehicle
+        </Link>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
 
       {/* RIGHT - PROFILE DROPDOWN */}
       <div className="oz-nav-right">

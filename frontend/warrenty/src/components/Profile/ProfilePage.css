@@ -1,0 +1,69 @@
+.profile-page {
+  min-height: 100vh;
+  background: #f4f6f9;
+}
+
+.profile-container {
+  width: 100%;
+  padding: 40px 80px;
+  margin-top: 80px;
+}
+
+.profile-card {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+}
+
+/* Header */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.ant-input,
+.ant-input-password {
+  height: 44px;
+  border-radius: 8px;
+}
+
+.profile-btn {
+  width: 220px;   /* button not full width */
+  height: 44px;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.delete-btn {
+  width: 220px;
+  height: 44px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 20px;
+  }
+
+  .profile-btn,
+  .delete-btn {
+    width: 100%;
+  }
+}

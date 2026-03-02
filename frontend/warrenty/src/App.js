@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import AddVehicle from "./components/Vehicle/AddVehicle";
 import "antd/dist/reset.css";
 import ClaimsTable from './components/Stepper/ClaimTable'
+import Profile from './components/Profile/ProfilePage'
 function App() {
   return (
     <Router>
@@ -32,6 +33,7 @@ function App() {
         
 
 <Route path="/add-vehicle" element={<AddVehicle />} />
+<Route path="/profile" element={<Profile />} />
 
         {/* Admin Route */}
         <Route

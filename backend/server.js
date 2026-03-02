@@ -7,7 +7,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const vehicleRoutes = require("./routes/vehicleRoutes");
 const warrantyRoutes = require("./routes/warrentyRoutes");
-
+const profileRoutes = require("./routes/profileRoutes");
 // Load environment variables
 dotenv.config();
 
@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
   res.send("Warranty Claim Backend Running");
 });
 
+app.use("/api/user", profileRoutes);
 // Handle 404
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });

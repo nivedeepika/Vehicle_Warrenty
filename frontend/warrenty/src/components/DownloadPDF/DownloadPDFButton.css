@@ -1,0 +1,11 @@
+.pdf-download-icon {
+  font-size: 18px;
+  color: #1677ff;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.pdf-download-icon:hover {
+  color: #0958d9;
+  transform: scale(1.15);
+}

@@ -1,40 +1,123 @@
-.claims-table-wrapper {
-  width: 100%;
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+/* ===== PAGE WRAPPER ===== */
+.claims-page {
+  min-height: 100vh;
+  background: #f4f6f9;
+  display: flex;
+  flex-direction: column;
 }
 
+/* ===== CONTENT AREA ===== */
+.claims-content {
+  flex: 1;
+  margin-top: 80px;
+  padding: 30px 40px;
+}
+
+/* ===== TABLE CARD ===== */
+.claims-table {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* ===== TITLE ===== */
 .claims-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   margin-bottom: 20px;
   color: #1f2937;
 }
 
-.claims-table {
-  width: 100%;
-}
-
-.ct-vehicle,
-.ct-issue {
+/* ===== FLEX CELL ALIGNMENT ===== */
+.ct-flex {
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 500;
 }
 
-.ct-download-btn {
-  border-radius: 6px;
+/* ===== STATUS ALIGN CENTER ===== */
+.ct-status-wrapper {
+  display: flex;
+  justify-content: center;
 }
 
+/* ===== STATUS TAG STYLE ===== */
+.ant-tag {
+  padding: 4px 10px;
+  font-weight: 500;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+/* ===== DOWNLOAD BUTTON ===== */
+.ct-download-btn {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* ===== TABLE HEADER STYLE ===== */
+.ant-table-thead > tr > th {
+  font-weight: 600;
+  background: #f9fafb !important;
+  text-align: center;
+}
+
+/* ===== TABLE BODY ALIGN FIX ===== */
+.ant-table-tbody > tr > td {
+  vertical-align: middle;
+}
+
+/* ===== COLLAPSED ROW LOOK ===== */
+.ant-table-tbody > tr {
+  transition: 0.2s ease;
+}
+
+.ant-table-tbody > tr:hover {
+  background: #f5f7fa;
+}
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .claims-table-wrapper {
-    padding: 12px;
+  .claims-content {
+    margin-top: 70px;
+    padding: 15px;
   }
 
   .claims-title {
-    font-size: 16px;
+    font-size: 18px;
   }
+}
+/* ===== ACTION ICONS ===== */
+.ct-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.ct-icon {
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ct-icon.preview {
+  color: #1677ff;
+}
+
+.ct-icon.preview:hover {
+  transform: scale(1.1);
+}
+
+.ct-icon.download {
+  color: #16a34a;
+}
+
+.ct-icon.download:hover {
+  transform: scale(1.1);
+}
+
+.ct-icon.disabled {
+  color: #ccc;
+  cursor: not-allowed;
 }
