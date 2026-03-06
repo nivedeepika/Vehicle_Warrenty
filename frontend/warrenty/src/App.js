@@ -15,6 +15,9 @@ import ClaimsTable from './components/Stepper/ClaimTable'
 import Profile from './components/Profile/ProfilePage'
 import HistoryUser from "./components/HistoryUser/HistoryUser";
 import DealerDashboardHome from './components/Dealer/DealerDashboard.jsx/DealerDashboard'
+
+import Admin from "./components/Admin/Admin";
+
 function App() {
   return (
     <Router>
@@ -42,7 +45,18 @@ function App() {
           path="/admin"
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
+              {/* <AdminDashboard />
+               */}
+               <Admin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/applications"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
               <AdminDashboard />
+              
             </ProtectedRoute>
           }
         />
