@@ -135,7 +135,7 @@ const StepCustomerVehicle = ({
 
               {/* ✅ Editable VIN */}
               <div className="scv-field">
-                <label>VIN Number</label>
+                <label>Chassis Number</label>
                 <input
                   value={vehicle.vinNumber || ""}
                   onChange={(e) =>

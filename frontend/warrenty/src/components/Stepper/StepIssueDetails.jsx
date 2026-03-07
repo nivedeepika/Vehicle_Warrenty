@@ -26,10 +26,11 @@ const StepIssueDetails = ({ issue, onIssueChange }) => {
               onChange={(v) => onIssueChange({ category: v })}
               placeholder="Select category"
             >
-              <Option value="engine">Engine</Option>
-              <Option value="electrical">Electrical</Option>
+              <Option value="engine">Battery</Option>
+              <Option value="electrical">Motor</Option>
               <Option value="brake">Brake</Option>
-              <Option value="transmission">Transmission</Option>
+              <Option value="transmission">Controller</Option>
+              <Option value="transmission">Charger</Option>
               <Option value="other">Other</Option>
             </Select>
           </div>

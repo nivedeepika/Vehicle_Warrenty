@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import WarrantyLogo from "../../asset/Logo.png";
-
+import ozortc from "../../asset/ozortc.png";
 function Navbar() {
   const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ function Navbar() {
       {/* LEFT - LOGO + TITLE */}
       <div className="oz-nav-left">
         <img
-          src={WarrantyLogo}
+          src={ozortc}
           alt="Warranty Logo"
           className="oz-nav-logo-img"
         />
